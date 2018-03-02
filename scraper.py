@@ -108,7 +108,6 @@ for pageLink in pageLinks:
         parsed_link = parsed_link._replace(path=urllib.quote(parsed_link.path))
         encoded_link = parsed_link.geturl()
         html2 = urllib2.urlopen(encoded_link)
-        print encoded_link
         soup2 = BeautifulSoup(html2, 'lxml')
         fileLinks = soup2.findAll('a',href=True)
         for fileLink in fileLinks:
@@ -118,6 +117,9 @@ for pageLink in pageLinks:
                 title = title.encode('utf8').strip().replace("\n", " ").replace("\r", " ").replace("\t", " ")
                 csvYr = title.split(' ')[7]
                 csvMth = title.split(' ')[6][:3]
+                if '-' in csvMth:
+                    csvMth = title.split(' ')[7][:3]
+                    csvYr = title.split(' ')[8]
                 csvMth = convert_mth_strings(csvMth.upper())
                 data.append([csvYr, csvMth, url])
 
@@ -142,3 +144,4 @@ if errors > 0:
 
 
 #### EOF
+
